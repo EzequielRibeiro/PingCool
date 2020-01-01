@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>img/button_red.png</file>
+        <file>img/button_blue.png</file>
+        <file>img/button_border.png</file>
+        <file>img/menu_icon.png</file>
+        <file>img/icon_world.png</file>
+        <file>check.qml</file>
+        <file>ping.qml</file>
+        <file>privacy.qml</file>
+        <file>img/icon_back.png</file>
+        <file>font.ttf</file>
+        <file>img/button.png</file>
+        <file>img/icon_internet.svg</file>
+        <file>img/icon_policy.svg</file>
+        <file>img/icon_info.svg</file>
+        <file>size.js</file>
+    </qresource>
+</RCC>

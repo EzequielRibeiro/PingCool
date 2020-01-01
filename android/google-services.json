@@ -1,0 +1,36 @@
+{
+  "project_info": {
+    "project_number": "989102112971",
+    "firebase_url": "https://terminal-14bb2.firebaseio.com",
+    "project_id": "terminal-14bb2",
+    "storage_bucket": "terminal-14bb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989102112971:android:24c095606a27c9e4",
+        "android_client_info": {
+          "package_name": "org.qtproject.PingCool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8NRmfEtqZZmf3DYziy-D6w0-S8gX5piI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "989102112971-e8gohtgg8hmj3khetkadbs3r4pr0hh2l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-0822808376839371~2943518809"
+    }
+  ],
+  "configuration_version": "1"
+}
