@@ -11,7 +11,7 @@ class Start:public QObject
 public:
 
     Start(QObject *parent = 0);
-    Q_INVOKABLE void startPing(const QString host,const bool loop);
+    Q_INVOKABLE void startPing(const QString host,const QString valuePackage);
     Q_INVOKABLE void stopPing();
     Q_INVOKABLE QString getValueFromC();
     Q_INVOKABLE QString getValuePortFromC();
@@ -30,7 +30,7 @@ private:
       MyTcpSocket* myTcpSocket;
       QThread* thread;
       QString value;
-      QString portValue;
+      QString portValue, valuePackage;
 
 
 

@@ -1,68 +1,109 @@
 import QtQuick 2.9
-import QtQuick.Window 2.1
-import QtQuick.Controls 2.5
-import QtQuick.Controls.Material 2.3
+import QtQuick.Controls 2.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Window 2.12
+import com.dreamdev.QtAdMobInterstitial 1.0
+import com.dreamdev.QtAdMobBanner 1.0
+
 //import StartQml 1.0
 //import PingModelQml 1.0
-import QtQuick.Dialogs.qml 1.0
-import QtQuick.Window 2.2
-import QmlBanner 1.0
-
-
-
-
 ApplicationWindow {
     id: applicationWindow
     width: Screen.width
     height: Screen.height
     color: "#000000"
+    title: "Ping Cool"
     visible: true
     Material.theme: Material.Dark
     Material.accent: Material.Purple
 
+    AdMobBanner {
+        id: banner
 
-    onClosing: {
-        if(Qt.platform.os == "android"){
+        Component.onCompleted: {
+            banner.unitId = "ca-app-pub-0822808376839371/8383424039"
+            banner.size = AdMobBanner.Banner
+            banner.visible = true
+        }
 
-            if(stackView.depth > 1){
-                close.accepted = false
-                stackView.pop()
+        onLoaded: {
+
+            banner.y = banner.height + 45
+
+            if (orientationScreen(Screen.orientation) === "landscape") {
+                banner.x = ((applicationWindow.width - banner.width) / 2) / 2
+            } else {
+                banner.x = (applicationWindow.width - banner.width) / 2
             }
 
+            if(drawer.opened){
+              banner.visible = false
+            }else{
+              banner.visible = true}
         }
 
+        function orientationScreen(o) {
+
+            switch (o) {
+            case Qt.PortraitOrientation:
+                return "portrait"
+            case Qt.LandscapeOrientation:
+                return "landscape"
+            }
+            return "unknown"
+        }
     }
 
-    Component.onCompleted: {
-           // Load Banner
-           id_banner.loadBanner()
+    AdMobInterstitial {
+        id: intertitial
 
-       }
-
-    QmlBanner {
-        id: id_banner
-        unitId: "ca-app-pub-0822808376839371/8383424039"
-        bannerSize: QmlBanner.BANNER
-
-
-        onBannerLoaded: {
-
-
+        Component.onCompleted: {
+            intertitial.unitId = "ca-app-pub-0822808376839371/8856722474"
         }
 
-     }
+        onClosed: {
+            intertitial.unitId = "ca-app-pub-0822808376839371/8856722474"
+        }
 
+        onLoaded: {
+            interstitialButton.enabled = true
+            console.log("AdMobInterstitial Show")
+        }
 
-    StackView{
+        onLoading: {
+            interstitialButton.enabled = false
+            console.log("AdMobInterstitial Loading...")
+        }
+    }
+
+    onClosing: {
+        if (Qt.platform.os == "android") {
+
+            if (stackView.depth > 1) {
+                close.accepted = false
+                stackView.pop()
+            } else {
+
+                if (intertitial.isLoaded) {
+                    intertitial.visible = true
+                } else {
+                    console.log("AdMobInterstitial not loaded")
+                }
+            }
+        }
+    }
+
+    StackView {
         id: stackView
+        width: 420
+        height: 760
         anchors.fill: parent
         initialItem: Qt.resolvedUrl("ping.qml")
-
     }
 
-    Dialog{
+    Dialog {
 
-        id:aboutDialog
+        id: aboutDialog
         width: 200
         height: 200
         visible: false
@@ -94,27 +135,24 @@ ApplicationWindow {
         }
     }
 
-    header: ToolBar{
+    header: ToolBar {
         id: toolBar
         anchors.left: parent.left
         anchors.right: parent.right
 
-
-        ToolButton{
+        ToolButton {
             id: menuButton
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
 
+            onClicked: {
 
-            onClicked:{
-
-                if(stackView.depth > 1){
+                if (stackView.depth > 1) {
                     stackView.pop()
-                }else{
-                   drawer.open()
-                }
+                } else {
+                    drawer.open()
+                  }
             }
-
 
             Image {
                 id: image
@@ -128,22 +166,19 @@ ApplicationWindow {
                 source: stackView.depth > 1 ? "img/icon_back.png" : "img/menu_icon.png"
                 fillMode: Image.PreserveAspectFit
             }
-
-
         }
-
     }
 
-    Drawer{
+    Drawer {
 
         id: drawer
-        width: Math.min(applicationWindow.width,applicationWindow.height) / 3 * 2
+        width: Math.min(applicationWindow.width,
+                        applicationWindow.height) / 3 * 2
         height: applicationWindow.height
 
+        Rectangle {
 
-        Rectangle{
-
-            id:rectLogo
+            id: rectLogo
             anchors.top: parent.top
             width: drawer.width
             height: logo.height
@@ -164,6 +199,7 @@ ApplicationWindow {
             }
 
             Label {
+                id: labelVersion
                 text: "v1.0"
                 anchors.right: parent.right
                 anchors.rightMargin: 5
@@ -177,288 +213,78 @@ ApplicationWindow {
 
         }
 
-        Rectangle{
+        Rectangle {
 
-            id:rectColumn
+            id: rectColumn
             width: drawer.width
             anchors.top: rectLogo.bottom
             height: applicationWindow.height - logo.height
             color: "#d5cfcf"
-
-
-
         }
 
+        Column {
+            anchors.top: rectLogo.bottom
+            width: drawer.width
+            height: applicationWindow.height - logo.height
 
-        Column{
-          anchors.top: rectLogo.bottom
-          width: drawer.width
-          height: applicationWindow.height - logo.height
+            ItemDelegate {
+                text: qsTr("")
+                width: parent.width
+            }
 
+            ItemDelegate {
+                text: qsTr("")
+            }
 
+            MenuSeparator {}
 
-          ItemDelegate{
-            text: qsTr("")
-            width: parent.width
+            ItemDelegate {
+                text: qsTr("Check Port")
+                width: parent.width
+                icon.source: "img/icon_internet.svg"
 
-          }
+                onClicked: {
 
-          ItemDelegate{
-            text: qsTr("")
+                    stackView.push("check.qml")
+                    drawer.close()
+                    banner.visible = true
+                }
+            }
 
-          }
+            MenuSeparator {}
 
-          MenuSeparator { }
+            ItemDelegate {
+                text: qsTr("Privacy Policy")
+                width: parent.width
+                icon.source: "img/icon_policy.svg"
+                onClicked: {
 
-           ItemDelegate{
-             text: qsTr("Check Port")
-             width: parent.width
-             icon.source: "img/icon_internet.svg"
+                    stackView.push("privacy.qml")
+                    drawer.close()
+                }
+            }
 
-             onClicked: {
+            MenuSeparator {}
 
-                 stackView.push("check.qml")
-                 drawer.close()
-
-             }
-
-           }
-
-           MenuSeparator { }
-
-           ItemDelegate{
-             text: qsTr("Privacy Policy")
-             width: parent.width
-             icon.source: "img/icon_policy.svg"
-             onClicked: {
-
-                 stackView.push("privacy.qml")
-                 drawer.close()
-
-             }
-
-           }
-
-           MenuSeparator { }
-
-           ItemDelegate{
-             text: qsTr("About")
-             width: parent.width
-             icon.source: "img/icon_info.svg"
-             onClicked: {
-
-                 aboutDialog.open()
-                 drawer.close()
-
-             }
-
-           }
-
-
+            ItemDelegate {
+                text: qsTr("About")
+                width: parent.width
+                icon.source: "img/icon_info.svg"
+                onClicked: {
+                    aboutDialog.open()
+                    drawer.close()
+                }
+            }
         }
 
-
-
-
+        onAboutToHide: banner.visible = true
+        onAboutToShow: banner.visible = false
     }
-
-
-
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*##^## Designer {
-    D{i:0;height:800;width:480}
+/*##^##
+Designer {
+    D{i:0;height:760;width:420}
 }
- ##^##*/
+##^##*/
+

@@ -13,7 +13,8 @@ MyTcpSocket::MyTcpSocket(const QString host,const quint16 port){
 
 MyTcpSocket::MyTcpSocket(const QString host,const int bottom,const int top){
 
-    this->host = host;
+    QString temp = host;
+    this->host = temp.replace(" ","");
     this->bottom = bottom;
     this->top = top;
     isRangePort = true;

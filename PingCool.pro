@@ -1,5 +1,6 @@
-QT += quick network concurrent core svg gui-private
+QT += qml quick network concurrent core svg gui-private
 CONFIG += c++11
+DEFINES += QTADMOB_QML
 
 android {
     QT += androidextras
@@ -16,15 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+
 SOURCES += \
         main.cpp \
-        qmlbanner.cpp \
         mytcpsocket.cpp \
         start.cpp \
         pingmodel.cpp \
         ping.cpp \
 
-
+HEADERS += \
+    start.h \
+    mytcpsocket.h \
+    pingmodel.h \
+    ping.h \
 
 RESOURCES += qml.qrc \
 
@@ -50,25 +55,31 @@ android {
         android/build.gradle \
         android/gradle/wrapper/gradle-wrapper.properties \
         android/gradlew.bat \
-        android/src/org/qtproject/QtAdMobActivity.java \
         android/app/build.gradle \
-        android/app/google-services.json \
-        android/res/values/strings.xml \
         android/google-services.json \
+	android/src/org/ping/cool/QtAdMobActivity.java \
+
 }
 
+IOS_PACKAGE_SOURCE_DIR = $$PWD/ios
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
-
-HEADERS += \
-    qmlbanner.h \
-    start.h \
-    mytcpsocket.h \
-    pingmodel.h \
-    ping.h \
+include(QtAdMob.pri)
 
 
+ios:
+{
+    ios:QMAKE_INFO_PLIST = $$IOS_PACKAGE_SOURCE_DIR/Info.plist
+    ios:QMAKE_IOS_DEPLOYMENT_TARGET = 7.0
+}
 
-
+DISTFILES += \
+    ios/GoogleMobileAds/GoogleMobileAds.framework/GoogleMobileAds \
+    ios/GoogleMobileAds/GoogleMobileAds.framework/Headers \
+    ios/GoogleMobileAds/GoogleMobileAds.framework/Modules/module.modulemap \
+    ios/GoogleMobileAds/GoogleMobileAds.framework/Versions/A/GoogleMobileAds \
+    ios/GoogleMobileAds/GoogleMobileAds.framework/Versions/Current \
+    ios/GoogleMobileAds/Mediation Adapters/README.txt \
+    ios/GoogleMobileAds/README.txt
 
 
 

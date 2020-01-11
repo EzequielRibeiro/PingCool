@@ -1,16 +1,12 @@
 
 
-var screenRef = 420;
+var screenRef = 600 * 800;
 
-function size(value,screenSize){
-	  
-	  var ref = 1;
-	
-	  if(screenSize > 1)
-      ref = (screenSize * 1) / screenRef;
-          
-     return Math.round(value * ref);	  
-		
+function size(screenSize,itemSize){
+
+     var valueSize = screenSize / screenRef;
+     return Math.round(itemSize * valueSize);
+
 	
 	
 }

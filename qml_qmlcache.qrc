@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<RCC>
+    <qresource prefix="/">
+        <file alias="img/button_red.png">img/button_red.png</file>
+        <file alias="img/button_blue.png">img/button_blue.png</file>
+        <file alias="img/button_border.png">img/button_border.png</file>
+        <file alias="img/menu_icon.png">img/menu_icon.png</file>
+        <file alias="img/icon_world.png">img/icon_world.png</file>
+        <file alias="img/icon_back.png">img/icon_back.png</file>
+        <file alias="font.ttf">font.ttf</file>
+        <file alias="img/button.png">img/button.png</file>
+        <file alias="img/icon_internet.svg">img/icon_internet.svg</file>
+        <file alias="img/icon_policy.svg">img/icon_policy.svg</file>
+        <file alias="img/icon_info.svg">img/icon_info.svg</file>
+    </qresource>
+</RCC>

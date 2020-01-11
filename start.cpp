@@ -1,6 +1,5 @@
 #include "start.h"
-#include "pingmodel.h"
-#include "mytcpsocket.h"
+
 
 Start::Start(QObject* parent) : QObject(parent)
 {
@@ -9,12 +8,13 @@ Start::Start(QObject* parent) : QObject(parent)
 }
 
 
-void Start::startPing(const QString host,const bool loop){
+void Start::startPing(const QString host,const QString valuePackage){
 
     thread = new QThread;
     pingModel = new PingModel();
     pingModel->setHost(host);
-    pingModel->setLoop(loop);
+   // pingModel->setLoop(loop);
+    pingModel->setValuePackage(valuePackage);
     pingModel->moveToThread(thread);
 
     connect(pingModel,SIGNAL(valueChanged()),this,SLOT(getValueStart()));
@@ -28,12 +28,12 @@ void Start::startPing(const QString host,const bool loop){
 void Start::stopPing(){
 
    pingModel->terminate();
-   pingModel->exit();
+  // pingModel->exit();
 
-   if(thread)
+ /*  if(thread)
        if(thread->isRunning())
              thread->exit();
-
+*/
 
 
 
@@ -62,8 +62,9 @@ void Start::checkPortStop(){
 
 void Start::checkPortRange(const QString host,const int bottom,const int top){
 
+    QString temp = host;
     thread = new QThread;
-    myTcpSocket = new MyTcpSocket(host,bottom,top);
+    myTcpSocket = new MyTcpSocket(temp.replace(" ",""),bottom,top);
     myTcpSocket->moveToThread(thread);
 
     connect(myTcpSocket,SIGNAL(valueChangedPort()),this,SLOT(getValuePortCheck()));

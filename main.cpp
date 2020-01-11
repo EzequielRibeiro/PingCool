@@ -3,8 +3,8 @@
 #include <QQmlContext>
 #include <start.h>
 #include <pingmodel.h>
-#include <qmlbanner.h>
-
+#include "admob/QtAdMobBanner.h"
+#include "admob/QtAdMobInterstitial.h"
 
 
 int main(int argc, char *argv[])
@@ -12,10 +12,13 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
+	
+    QmlAdMobBanner::DeclareQML();
+    QmlAdMobInterstitial::DeclareQML();
+	
     Start start;
 
-    qmlRegisterType<QmlBanner>("QmlBanner", 1,0, "QmlBanner");
+   // qmlRegisterType<QmlBanner>("QmlBanner", 1,0, "QmlBanner");
 
 
     QQmlApplicationEngine engine;

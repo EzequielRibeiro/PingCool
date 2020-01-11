@@ -67,34 +67,29 @@ void PingModel::readResult(){
 
 }
 
-void PingModel::setLoop(bool loop){
-    this->loop = loop;
-
-
-}
 
 void PingModel::setHost(QString h){
 
-    host = h;
+    host = h.replace(" ","");
+
+}
+
+void PingModel::setValuePackage(const QString valuePackage){
+
+    this->valuePackage = valuePackage;
 
 }
 
 void PingModel::start_command(){
 
      QString command = "ping";
-      QStringList args;
+     QStringList args;
 
-    if(loop){
-     args <<"-v"<<"-b"<<host;
-
-    }else{
-     args <<"-c"<<"5"<<"-v"<<"-b"<<host;
-
-    }
-
+    args <<"-s"<<valuePackage<<"-v"<<"-b"<<host;
 
     if(ping){
         ping->start(command, args);
+        pid = ping->pid();
         ping->waitForStarted(5000);
         running = true;
         ping->waitForFinished(5000);
@@ -147,8 +142,10 @@ bool PingModel::finished(){
 }
 void PingModel::terminate(){
 
+
     if(ping->Running){
-        ping->terminate();
+       //ping->start("kill", args);
+         ping->terminate();
 
     }
 }

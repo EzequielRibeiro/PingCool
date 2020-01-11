@@ -14,13 +14,13 @@ public:
 
     explicit PingModel();
     ~PingModel();
-
+    Q_PID pid;
     bool is_running();
     bool finished();
     void terminate();
-    void setLoop(bool loop);
-    void setHost(QString h);
-    void setValue(QString v);
+    void setHost(const QString h);
+    void setValue(const QString v);
+    void setValuePackage(const QString valuePackage);
     QString getValue();
 
 
@@ -39,8 +39,8 @@ private:
     QProcess *ping;
     bool running;
     QString host ;
-    QString value;
-    bool loop;
+    QString value, valuePackage;
+
 
 };
 

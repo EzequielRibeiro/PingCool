@@ -2,33 +2,41 @@ import QtQuick 2.9
 import QtQuick.Controls 2.5
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.12
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4
+import "size.js" as Size
 
 
 Page {
     id: checkWindow
     width: Screen.width
-    height: Screen.height - 60
+    height: Screen.height
     title: "Check Port"
+
+    property var aviso: "Check a port's status by entering an address and port number"
+
 
     FontLoader { id: myFont; source: "font.ttf" }
 
     Rectangle {
         id: rectangle3
-        width: checkWindow.width
-        height: checkWindow.height
+        width: 460
+        height: 720
         color: "#000000"
         anchors.fill: parent
 
-       Component.onDestruction: start.checkPortStop()
+        Component.onDestruction: start.checkPortStop()
 
         GridLayout {
-            x: 15
             y: 15
-            anchors.rightMargin: 15
-            anchors.leftMargin: 15
-            anchors.bottomMargin: 15
             anchors.topMargin: 15
-            anchors.fill: parent
+            anchors.right: parent.right
+            anchors.rightMargin: 15
+            anchors.left: parent.left
+            anchors.leftMargin: 15
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 15
+            anchors.top: parent.top
             anchors.margins: 5
             rowSpacing: 5
             columnSpacing: 5
@@ -43,13 +51,20 @@ Page {
 
                 Text {
                     id: logoText
+                    height: 60
                     color: "#4cce21"
                     text: qsTr("Check Port")
+                    anchors.right: parent.right
+                    anchors.rightMargin: 5
+                    anchors.left: parent.left
+                    anchors.leftMargin: 5
+                    layer.enabled: true
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
                     anchors.bottom: rectangle2.top
                     anchors.bottomMargin: 20
-                    anchors.horizontalCenter: parent.horizontalCenter
                     font.letterSpacing: 1.4
-                    font.pixelSize: 35
+                    font.pixelSize: 50
                     font.family: myFont.name
                 }
 
@@ -59,12 +74,11 @@ Page {
                     height: 45
                     color: "#767676"
                     radius: 20
-                    anchors.bottom: rectangle4.top
-                    anchors.bottomMargin: 20
                     anchors.right: parent.right
-                    anchors.rightMargin: 20
+                    anchors.rightMargin: 50
                     anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.leftMargin: 50
+                    anchors.verticalCenter: parent.verticalCenter
                     border.color: "#00000000"
                     border.width: 0
 
@@ -87,27 +101,29 @@ Page {
 
                 Rectangle {
                     id: rectangle4
-                    height: 120
+                    width: 400
                     color: "#1d1b18"
                     radius: 20
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 14
+                    anchors.bottomMargin: 10
                     anchors.left: parent.left
-                    anchors.leftMargin: 20
+                    anchors.leftMargin: 10
                     anchors.right: parent.right
-                    anchors.rightMargin: 20
+                    anchors.rightMargin: 10
+                    anchors.top: rectangle2.bottom
+                    anchors.topMargin: 10
                     border.width: 0
 
                     Rectangle {
                         id: rectInputOne
-                        width: 80
-                        height: 40
+                        width: 100
+                        height: 30
                         color: "#d1cdca"
                         radius: 20
+                        anchors.left: element2.right
+                        anchors.leftMargin: 5
                         anchors.bottom: recInputMult2.top
-                        anchors.bottomMargin: 5
-                        anchors.right: imageOnePort.left
-                        anchors.rightMargin: 10
+                        anchors.bottomMargin: 10
                         border.color: "#00000000"
                         border.width: 0
 
@@ -133,12 +149,11 @@ Page {
                         id: recInputMult1
                         x: 109
                         y: 130
-                        width: 80
-                        height: 40
+                        width: 100
+                        height: 30
                         color: "#d1cdca"
                         radius: 20
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
                         anchors.right: element2.left
                         anchors.rightMargin: 5
                         border.color: "#00000000"
@@ -166,14 +181,12 @@ Page {
                         id: recInputMult2
                         x: 239
                         y: 105
-                        width: 80
-                        height: 40
+                        width: 100
+                        height: 30
                         color: "#d1cdca"
                         radius: 20
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        anchors.right: imageMultiPort.left
-                        anchors.rightMargin: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
                         border.color: "#00000000"
                         border.width: 0
 
@@ -196,140 +209,148 @@ Page {
 
 
 
-                    Image {
-                        id: imageOnePort
-                        x: 118
-                        width: 80
-                        height: 40
-                        anchors.bottom: imageMultiPort.top
-                        anchors.bottomMargin: 5
-                        anchors.right: parent.right
-                        anchors.rightMargin: 5
-                        source: "img/button.png"
-                        fillMode: Image.PreserveAspectFit
-
-                        Text {
-                            id: textButtonOne
-                            text: "check"
-                            anchors.fill: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            lineHeight: 0.2
-                            font.pixelSize: 16
-                        }
-
-
-
-
-
-                        MouseArea {
-                            id: mouseAreaButtonOne
-                            anchors.fill: parent
-
-                            onClicked: {
-                                if(textInput.length != 0)
-                                    if ((textInputOne.length !== 0) && (textButtonOne.length !== 0)){
-                                        start.checkPortStop();
-                                        textButtonTwo.text = "check"
-                                        start.checkPort(textInput.text,parseInt(textInputOne.text));
-                                        textError.text = ""
-                                        //hide keyboard
-                                        Qt.inputMethod.hide();
-                                }else{
-
-                                     textError.text = "invalid Input"
-
-                                }
-                            }
-                        }
-                    }
-
-                    Image {
-                        id: imageMultiPort
-                        x: 376
-                        width: 80
-                        height: 40
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
-                        anchors.right: parent.right
-                        anchors.rightMargin: 5
-                        source: "img/button.png"
-                        fillMode: Image.PreserveAspectFit
-
-                        Text {
-                            id: textButtonTwo
-                            text: qsTr("check")
-                            anchors.fill: parent
-                            horizontalAlignment: Text.AlignHCenter
-                            verticalAlignment: Text.AlignVCenter
-                            lineHeight: 0.2
-                            font.pixelSize: 16
-                        }
-
-                        MouseArea {
-                            id: mouseAreaButtonT
-                            anchors.fill: parent
-
-                            onClicked: {
-
-                                if(textButtonTwo.text === "check"){
-                                    if((textInput.length != 0))
-                                      if((textInputMult1.length != 0) && (textInputMult2.length != 0) )
-                                         if(parseInt(textInputMult1.text) < parseInt(textInputMult2.text)){
-                                               start.checkPortRange(textInput.text,parseInt(textInputMult1.text),
-                                                   parseInt(textInputMult2.text));
-                                                    textButtonTwo.text = "stop"
-                                                    textError.text = ""
-                                             //hide keyboard
-                                             Qt.inputMethod.hide();
-
-                                           }else{
-                                              textError.text = "invalid Input"
-                                           }
-
-                                }else{
-                                    textButtonTwo.text = "check"
-                                    start.checkPortStop()
-                                }
-                            }
-                        }
-                    }
-
                     Text {
                         id: element2
                         y: 138
                         color: "#ffffff"
                         text: qsTr("<")
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 15
-                        horizontalAlignment: Text.AlignHCenter
-                        verticalAlignment: Text.AlignVCenter
                         anchors.right: recInputMult2.left
                         anchors.rightMargin: 5
+                        anchors.verticalCenter: parent.verticalCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                         font.bold: true
                         font.pixelSize: 20
                     }
 
+                    Button {
+                        id: button1
+                        y: 30
+                        height: 30
+                        text: qsTr("CHECK")
+                        iconSource: ""
+                        anchors.left: rectInputOne.right
+                        anchors.leftMargin: 10
+                        anchors.bottom: button2.top
+                        anchors.bottomMargin: 10
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                radius: 4
+                                implicitHeight: 25
+                                border.width: control.activeFocus ? 2 : 1
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 0
+                                        color: control.pressed ? "#ccc" : "#eee"
+                                    }
+
+                                    GradientStop {
+                                        position: 1
+                                        color: control.pressed ? "#aaa" : "#ccc"
+                                    }
+                                }
+                                border.color: "#888888"
+                                implicitWidth: 100
+                            }
+                        }
+                        onClicked: {
+                            if(textInput.length != 0)
+                                if ((textInputOne.length !== 0) && (button1.length !== 0)){
+                                    start.checkPortStop();
+                                    button2.text = "CHECK"
+                                    start.checkPort(textInput.text,parseInt(textInputOne.text));
+                                    textError.text = aviso
+                                    //hide keyboard
+                                    Qt.inputMethod.hide();
+                                }else{
+
+                                    textError.text = "invalid Input"
+
+                                }
+                        }
+                    }
+
+                    Button {
+                        id: button2
+                        y: 30
+                        width: 100
+                        height: 30
+                        text: qsTr("CHECK")
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: recInputMult2.right
+                        anchors.leftMargin: 10
+                        style: ButtonStyle {
+                            background: Rectangle {
+                                radius: 4
+                                implicitHeight: 25
+                                border.width: control.activeFocus ? 2 : 1
+                                gradient: Gradient {
+                                    GradientStop {
+                                        position: 0
+                                        color: control.pressed ? "#ccc" : "#eee"
+                                    }
+
+                                    GradientStop {
+                                        position: 1
+                                        color: control.pressed ? "#aaa" : "#ccc"
+                                    }
+                                }
+                                border.color: "#888888"
+                                implicitWidth: 100
+                            }
+                        }
+
+                        onClicked: {
+
+                            if(button2.text === "CHECK"){
+                                if((textInput.length != 0))
+                                    if((textInputMult1.length != 0) && (textInputMult2.length != 0) )
+                                        if(parseInt(textInputMult1.text) < parseInt(textInputMult2.text)){
+
+                                            start.checkPortRange(textInput.text,parseInt(textInputMult1.text),
+                                                                 parseInt(textInputMult2.text));
+                                            button2.text = "STOP"
+                                            textError.text = aviso
+                                            Qt.inputMethod.hide();
+
+                                        }else{
+                                            textError.text = "invalid Input"
+                                        }
+
+                            }else{
+                                button2.text = "CHECK"
+                                start.checkPortStop()
+                            }
+                        }
+                    }
+
+                    Text {
+                        id: textError
+                        y: 154
+                        height: 20
+                        color: "#cfc5c5"
+                        text: aviso
+                        wrapMode: Text.WrapAnywhere
+                        anchors.right: parent.right
+                        anchors.rightMargin: 5
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                        fontSizeMode: Text.Fit
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: 10
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.capitalization: Font.MixedCase
+                        font.family: "Tahoma"
+                        font.pixelSize: 18
+                    }
+
+
+
+
 
                 }
 
-
-                Text {
-                    id: textError
-                    height: 20
-                    color: "#f63f3f"
-                    text: qsTr("")
-                    anchors.top: rectangle2.bottom
-                    anchors.topMargin: 10
-                    horizontalAlignment: Text.AlignHCenter
-                    anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    anchors.left: parent.left
-                    anchors.leftMargin: 10
-                    font.capitalization: Font.AllLowercase
-                    font.family: "Tahoma"
-                    font.pixelSize: 14
-                }
 
             }
 
@@ -402,9 +423,9 @@ Page {
             if(valueFromC)
                 if(valueFromC !== "fim")
                     listModelPort.append({port:valueFromC})
-                 else{
-                    textButtonOne.text = "check"
-                    textButtonTwo.text = "check"
+                else{
+                    button1.text = "CHECK"
+                    button2.text = "CHECK"
                 }
 
 
@@ -425,135 +446,71 @@ Page {
     property real refValor: 800 * 480
 
     function size(value) {
-       var sizeCurrent = Screen.width * Screen.heigth;
-       return Math.round((value * sizeCurrent) / refValor);
+        var sizeCurrent = Screen.width * Screen.heigth;
+        return Math.round((value * sizeCurrent) / refValor);
+    }
+
+
+    Component.onCompleted: {
+        setSizeItem()
+    }
+
+    function setSizeItem(){
+
+        var screenSize =  (Screen.width * Screen.height);
+
+        logoText.font.pixelSize = Size.size(screenSize,logoText.font.pixelSize);
+        logoText.height = Size.size(screenSize,logoText.height);
+
+        textInput.font.pixelSize = Size.size(screenSize,textInput.font.pixelSize);
+        textInput.height = Size.size(screenSize,textInput.height);
+
+        rectangle2.width = Size.size(screenSize,rectangle2.width);
+        rectangle2.height = Size.size(screenSize,rectangle2.height);
+
+        rectangle4.width = Size.size(screenSize,rectangle4.width);
+        rectangle4.height = Size.size(screenSize,rectangle4.height);
+
+        rectInputOne.width = Size.size(screenSize,rectInputOne.width);
+        rectInputOne.height = Size.size(screenSize,rectInputOne.height);
+
+        textInputOne.font.pixelSize = Size.size(screenSize,textInputOne.font.pixelSize);
+        textInputOne.height = Size.size(screenSize,textInputOne.height);
+
+        recInputMult1.width = Size.size(screenSize,recInputMult1.width);
+        recInputMult1.height = Size.size(screenSize,recInputMult1.height);
+
+        textInputMult1.font.pixelSize = Size.size(screenSize,textInputMult1.font.pixelSize);
+        textInputMult1.height = Size.size(screenSize,textInputMult1.height);
+
+        recInputMult2.width = Size.size(screenSize,recInputMult2.width);
+        recInputMult2.height = Size.size(screenSize,recInputMult2.height);
+
+        textInputMult2.font.pixelSize = Size.size(screenSize,textInputMult2.font.pixelSize);
+        textInputMult2.height = Size.size(screenSize,textInputMult2.height);
+
+        button1.width = Size.size(screenSize,button1.width);
+        button1.height = Size.size(screenSize,button1.height);
+
+        button2.width = Size.size(screenSize,button2.width);
+        button2.height = Size.size(screenSize,button2.height);
+
+        element2.width = Size.size(screenSize,element2.width);
+        element2.height = Size.size(screenSize,element2.height);
+
+        textError.width = Size.size(screenSize,textError.width);
+        textError.height = Size.size(screenSize,textError.height);
+
     }
 
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*##^## Designer {
-    D{i:0;height:800;width:480}D{i:5;anchors_width:268}D{i:15;anchors_height:40;anchors_y:105}
-D{i:21;anchors_height:40}D{i:8;anchors_height:150}
+/*##^##
+Designer {
+    D{i:0;height:800;width:600}D{i:5;anchors_width:268}D{i:9;anchors_height:40}D{i:12;anchors_width:100;anchors_x:109}
+D{i:16;anchors_y:14}D{i:15;anchors_height:40;anchors_x:239;anchors_y:105}D{i:19;anchors_height:40;anchors_x:"-2";anchors_y:"-7"}
+D{i:25;anchors_height:40;anchors_x:0;anchors_y:29}D{i:31;anchors_height:20;anchors_width:120;anchors_x:215}
+D{i:8;anchors_height:130}D{i:3;anchors_x:15}
 }
- ##^##*/
+##^##*/

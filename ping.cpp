@@ -35,7 +35,7 @@ void Ping::run(){
     params << "-w" <<  "3" <<  "www.google.com";
     process->start(exec,params,QIODevice::ReadOnly);
     process->waitForStarted(3000);
-    process->waitForFinished(1000);
+    process->waitForFinished(3000);
 
     if(process->state() == QProcess::Running){
     qDebug()<< "rodando";
